@@ -1,18 +1,24 @@
 ﻿
 
-const size_t start_capacity = 10;
+const size_t start_capacity = 5;
 template <class T>
 class TQueue {
 	T* pMem;
 	size_t first, last;
-	size_t capacity;
-	size_t count;
+	//size_t capacity;
+	size_t count_;
 	void resize() {
 		T* tmp = new T[capacity * 2];
 		std::copy(pMem, pMem + capacity, tmp);
 		capacity *= 2;
 		delete[] pMem;
 		pMem = tmp;
+	}
+	void printarr() {
+		for (int i = 0; i < capacity; i++) {
+			std::cout << pMem[i] << ", ";
+		}
+		std::cout << std::endl;
 	}
 	void recomposing() {
 		T* tmp = new T[capacity * 2];
@@ -22,17 +28,19 @@ class TQueue {
 		for (int i = 0; i < last; i++) {
 			tmp[i + capacity - first] = pMem[i];
 		}
-		last = count - 1;
+		last = count_;
 		first = 0;
 		delete[] pMem;
 		pMem = tmp;
+		capacity *= 2;
 	}
 public:
+	size_t capacity;
 	TQueue() {
 		pMem = new T[start_capacity];
 		first = -1;
 		last = -1;
-		count = 0;
+		count_ = 0;
 		capacity = start_capacity;
 	}
 	~TQueue() {
@@ -49,26 +57,42 @@ public:
 		std::copy(q.pMem, q.pMem + capacity, pMem);
 	}
 	void push(const T& elem) {
+		//std::cout <<"BEFORE PUSH:" << "FIRST = " << first << " LAST = " << last << std::endl;
+		//printarr();
+
 		last++;
 
-		if (count == capacity) {
+		if (count_ == capacity) {
 			if (last == first) recomposing();
 			else resize();
 		}
-		else if (last - 1 == capacity - 1) last = 0;
-		
-		if (first == -1) first++;
+		else if (last == capacity) { 
+			last = 0;
+		}
 		pMem[last] = elem;
-		count++;
+
+		count_++;
+		if (first == -1) first++;
+
+
+		//std::cout <<"AFTER PUSH" << "FIRST = " << first << " LAST = " << last << std::endl;
+		//printarr();
+		//std::cout << std::endl;
 	}
 	const T& pop() {
 		if (empty()) throw std::logic_error("queue is empty");
 
 		int first_ = first;
-		first++; count--;
+		count_--;
+
+		if (first == capacity - 1) first = 0;
+		else first++;
+		
 		if (empty()) first = last = -1;
 
 		return pMem[first_];
 	}
-	bool empty() const { return count == 0; }
+	bool empty() const noexcept { return count_ == 0; }
+	
+	size_t count() const noexcept { return count_; }
 };

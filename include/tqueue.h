@@ -6,7 +6,7 @@ class TQueue {
 	T* pMem;
 	size_t first, last;
 	size_t capacity;
-	bool first_using;
+	size_t count;
 	void resize() {
 		T* tmp = new T[capacity * 2];
 		std::copy(pMem, pMem + capacity, tmp);
@@ -22,7 +22,7 @@ class TQueue {
 		for (int i = 0; i < last; i++) {
 			tmp[i + capacity - first] = pMem[i];
 		}
-		last = capacity - first + last - 1;
+		last = size - 1;
 		first = 0;
 		delete[] pMem;
 		pMem = tmp;
@@ -32,7 +32,7 @@ public:
 		pMem = new T[start_capacity];
 		first = 0;
 		last = 0;
-		first_using = true;
+		count = 0;
 	}
 	~TQueue() {
 		delete[] pMem;
@@ -48,19 +48,21 @@ public:
 		std::copy(q.pMem, q.pMem + capacity, pMem);
 	}
 	void push(const T& elem) {
-		if (first_using) {
-			pMem[last++] = elem;
+		
+		if (size == capacity) {
+			if (last == first - 1) recomposing();
+			else resize();
 		}
-		else {
-			if (first == 0 && last == capacity) {
-				resize();
-			}
-			else {
-				recomposing();
-			}
-		}
+		else if (last == capacity - 1) last = -1;
+		
+		pMem[++last] = elem;
+		size++;
 	}
 	const T& pop() {
-		
+		if (empty()) throw std::logic_error("queue is empty");
+		first++;
+		size--;
+		if (empty()) first = last = 0;
 	}
+	bool empty() const { return size == 0; }
 };

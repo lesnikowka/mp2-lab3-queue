@@ -22,7 +22,7 @@ class TQueue {
 		for (int i = 0; i < last; i++) {
 			tmp[i + capacity - first] = pMem[i];
 		}
-		last = size - 1;
+		last = count - 1;
 		first = 0;
 		delete[] pMem;
 		pMem = tmp;
@@ -30,9 +30,10 @@ class TQueue {
 public:
 	TQueue() {
 		pMem = new T[start_capacity];
-		first = 0;
-		last = 0;
+		first = -1;
+		last = -1;
 		count = 0;
+		capacity = start_capacity;
 	}
 	~TQueue() {
 		delete[] pMem;
@@ -48,21 +49,26 @@ public:
 		std::copy(q.pMem, q.pMem + capacity, pMem);
 	}
 	void push(const T& elem) {
-		
-		if (size == capacity) {
-			if (last == first - 1) recomposing();
+		last++;
+
+		if (count == capacity) {
+			if (last == first) recomposing();
 			else resize();
 		}
-		else if (last == capacity - 1) last = -1;
+		else if (last - 1 == capacity - 1) last = 0;
 		
-		pMem[++last] = elem;
-		size++;
+		if (first == -1) first++;
+		pMem[last] = elem;
+		count++;
 	}
 	const T& pop() {
 		if (empty()) throw std::logic_error("queue is empty");
-		first++;
-		size--;
-		if (empty()) first = last = 0;
+
+		int first_ = first;
+		first++; count--;
+		if (empty()) first = last = -1;
+
+		return pMem[first_];
 	}
-	bool empty() const { return size == 0; }
+	bool empty() const { return count == 0; }
 };

@@ -60,16 +60,17 @@ public:
 		//std::cout <<"BEFORE PUSH:" << "FIRST = " << first << " LAST = " << last << std::endl;
 		//printarr();
 
-		last++;
+		//last++;
 
 		if (count_ == capacity) {
 			if (last == first) recomposing();
 			else resize();
+			last = count_ - 1;
 		}
 		else if (last == capacity) { 
-			last = 0;
+			last = -1;
 		}
-		pMem[last] = elem;
+		pMem[++last] = elem;
 
 		count_++;
 		if (first == -1) first++;

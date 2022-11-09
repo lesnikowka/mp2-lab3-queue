@@ -5,7 +5,7 @@ template <class T>
 class TQueue {
 	T* pMem;
 	size_t first, last;
-	//size_t capacity;
+	size_t capacity
 	size_t count_;
 	void resize() {
 		T* tmp = new T[capacity * 2];
@@ -14,12 +14,7 @@ class TQueue {
 		delete[] pMem;
 		pMem = tmp;
 	}
-	void printarr() {
-		for (int i = 0; i < capacity; i++) {
-			std::cout << pMem[i] << ", ";
-		}
-		std::cout << std::endl;
-	}
+
 	void recomposing() {
 		T* tmp = new T[capacity * 2];
 		for (int i = first; i < capacity; i++) {
@@ -35,7 +30,7 @@ class TQueue {
 		capacity *= 2;
 	}
 public:
-	size_t capacity;
+
 	TQueue() {
 		pMem = new T[start_capacity];
 		first = -1;
@@ -57,10 +52,6 @@ public:
 		std::copy(q.pMem, q.pMem + capacity, pMem);
 	}
 	void push(const T& elem) {
-		//std::cout <<"BEFORE PUSH:" << "FIRST = " << first << " LAST = " << last << std::endl;
-		//printarr();
-
-		//last++;
 
 		if (count_ == capacity) {
 			if (last == first) recomposing();
@@ -74,11 +65,6 @@ public:
 
 		count_++;
 		if (first == -1) first++;
-
-
-		//std::cout <<"AFTER PUSH" << "FIRST = " << first << " LAST = " << last << std::endl;
-		//printarr();
-		//std::cout << std::endl;
 	}
 	const T& pop() {
 		if (empty()) throw std::logic_error("queue is empty");

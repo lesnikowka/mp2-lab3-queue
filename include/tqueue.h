@@ -1,5 +1,4 @@
 ﻿#include <algorithm>
-#include <exception>
 
 const int start_capacity = 5;
 template <class T>
@@ -88,7 +87,7 @@ public:
 	}
 
 	const T& pop() {
-		if (empty()) throw std::exception("queue is empty");
+		if (empty()) throw "queue is empty";
 
 		int first_ = first;
 		count_--;

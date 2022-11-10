@@ -1,56 +1,74 @@
 ﻿
 
-const size_t start_capacity = 5;
+const int start_capacity = 5;
 template <class T>
 class TQueue {
 	T* pMem;
-	size_t first, last;
-	size_t capacity
-	size_t count_;
+	int first, last;
+	int capacity, count_;
+
 	void resize() {
 		T* tmp = new T[capacity * 2];
 		std::copy(pMem, pMem + capacity, tmp);
+
 		capacity *= 2;
+
 		delete[] pMem;
 		pMem = tmp;
 	}
 
 	void recomposing() {
 		T* tmp = new T[capacity * 2];
-		for (int i = first; i < capacity; i++) {
+
+		for (int i = first; i < capacity; i++) 
 			tmp[i - first] = pMem[i];
-		}
-		for (int i = 0; i < last; i++) {
+		
+		for (int i = 0; i < last; i++) 
 			tmp[i + capacity - first] = pMem[i];
-		}
-		last = count_;
-		first = 0;
+		
+		last = count_; first = 0; capacity *= 2;
+
 		delete[] pMem;
 		pMem = tmp;
-		capacity *= 2;
 	}
 public:
 
 	TQueue() {
 		pMem = new T[start_capacity];
-		first = -1;
-		last = -1;
-		count_ = 0;
+
+		first = -1; last = -1; count_ = 0;
 		capacity = start_capacity;
 	}
+
 	~TQueue() {
 		delete[] pMem;
 	}
-	TQueue(const TQueue& q) {
-		first = q.first;
-		last = q.last;
-		if (capacity != q.capacity) {
-			capacity = q.capacity;
-			delete[] pMem;
-			pMem = new T[capacity];
-		}
+
+	TQueue(const TQueue<T>& q) {
+		first = q.first; last = q.last; count_ = q.count_;
+		capacity = q.capacity;
+
+		pMem = new T[capacity];
+
 		std::copy(q.pMem, q.pMem + capacity, pMem);
 	}
+
+	TQueue<T>& operator=(const TQueue<T> q) {
+		if (this != &q) {
+			first = q.first; last = q.last;
+
+			if (capacity != q.capacity) {
+				delete[] pMem;
+				capacity = q.capacity;
+				pMem = new T[capacity];
+			}
+
+			std::copy(q.pMem, q.pMem + capacity, pMem);
+		}
+
+		return *this;
+	}
+
 	void push(const T& elem) {
 
 		if (count_ == capacity) {
@@ -58,14 +76,16 @@ public:
 			else resize();
 			last = count_ - 1;
 		}
-		else if (last == capacity) { 
+
+		else if (last == capacity)  
 			last = -1;
-		}
+		
 		pMem[++last] = elem;
 
 		count_++;
-		if (first == -1) first++;
+		if (first == -1) first = 0;
 	}
+
 	const T& pop() {
 		if (empty()) throw std::logic_error("queue is empty");
 
@@ -79,7 +99,8 @@ public:
 
 		return pMem[first_];
 	}
+
 	bool empty() const noexcept { return count_ == 0; }
 	
-	size_t count() const noexcept { return count_; }
+	int count() const noexcept { return count_; }
 };

@@ -55,7 +55,7 @@ public:
 
 	TQueue<T>& operator=(const TQueue<T> q) {
 		if (this != &q) {
-			first = q.first; last = q.last;
+			first = q.first; last = q.last; count_ = q.count_;
 
 			if (capacity != q.capacity) {
 				delete[] pMem;

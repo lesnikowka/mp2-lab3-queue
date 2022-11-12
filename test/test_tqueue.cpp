@@ -61,4 +61,18 @@ TEST(TStack, can_copy_queue) {
 	EXPECT_TRUE(equality);
 }
 
+TEST(TStack, can_assign_queue) {
+	bool equality = true;
+	TQueue<int> q1, q2;
+	for (int i = 0; i < 20; i++)
+		q1.push(i);
+
+	q2 = q1;
+
+	if (q1.count() != q2.count()) equality = false;
+	while (!q1.empty())
+		if (q1.pop() != q2.pop()) equality = false;
+
+	EXPECT_TRUE(equality);
+}
 

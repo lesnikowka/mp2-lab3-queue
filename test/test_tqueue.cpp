@@ -1,19 +1,41 @@
 #include "tqueue.h"
 #include <gtest.h>
+#include <vector>
 
 TEST(TQueue, can_create_queue) {
 	ASSERT_NO_THROW(TQueue<int> q);
 }
 
-TEST(TQueue, can_push_element_and_pop_it) {
+TEST(TQueue, can_push_element_and_pop_it_in_order) {
 	TQueue<int> q;
 	bool flag = true;
 
-	for (int i = 0; i < 20; i++)
+	for (int i = 0; i < 10; i++)
 		q.push(i);
 
-	for (int i = 0; i < 20; i++)
+	for (int i = 0; i < 10; i++)
 		if (q.pop() != i) flag = false;
+
+	EXPECT_TRUE(flag);
+}
+
+TEST(TQueue, can_push_element_and_pop_it_out_of_order) {
+	TQueue<int> q;
+	bool flag = true;
+	std::vector<int> v = {1,1,1,1,1,2,2,2,2,2,2,2,2,2,2};
+
+	for (int i = 0; i < 10; i++)
+		q.push(1);
+
+	for (int i = 0; i < 5; i++)
+		q.pop();
+
+	for (int i = 0; i < 10; i++)
+		q.push(2);
+
+	for (int i = 0; i < 15; i++)
+		if (v[i] != q.pop()) flag = false;
+		
 
 	EXPECT_TRUE(flag);
 }

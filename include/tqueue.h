@@ -7,24 +7,28 @@ class TQueue {
 	T* pMem;
 	int first, last, capacity;
 
+
 	void recomposing() {
 		T* tmp = new T[capacity * 2];
 
-		for (int i = first; i < count(); i++) 
-			tmp[i - first] = pMem[i];
+		//for (int i = first; i < count(); i++) 
+		//	tmp[i - first] = pMem[i];
+		std::copy(pMem + first, pMem + count(), tmp);
 		if (first == last + 1) {
-			for (int i = 0; i <= last; i++)
-				tmp[i + capacity - first] = pMem[i];
+			//for (int i = 0; i <= last; i++)
+			//	tmp[i + count() - first] = pMem[i];
+			std::copy(pMem, pMem + last + 1, tmp + capacity - first);
 			last = count() - 1;
 			first = 0;
 		}
-		capacity *= 2;
+		
 
+		
+		capacity *= 2;
 		delete[] pMem;
 		pMem = tmp;
 	}
 public:
-
 	TQueue() {
 		pMem = new T[start_capacity];
 
@@ -64,8 +68,12 @@ public:
 	void push(const T& elem) {
 		if (count() == capacity) recomposing();
 
-		pMem[++last] = elem;
-		first += int(first == -1);
+		if (last == capacity - 1) last = 0;
+		else last++;
+
+		pMem[last] = elem;
+		
+		if (first == -1) first = 0;
 		
 	}
 

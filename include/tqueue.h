@@ -11,12 +11,8 @@ class TQueue {
 	void recomposing() {
 		T* tmp = new T[capacity * 2];
 
-		//for (int i = first; i < count(); i++) 
-		//	tmp[i - first] = pMem[i];
 		std::copy(pMem + first, pMem + count(), tmp);
 		if (first == last + 1) {
-			//for (int i = 0; i <= last; i++)
-			//	tmp[i + count() - first] = pMem[i];
 			std::copy(pMem, pMem + last + 1, tmp + capacity - first);
 			last = count() - 1;
 			first = 0;

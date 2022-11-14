@@ -46,7 +46,7 @@ TEST(TQueue, empty_correct_if_queue_is_empty) {
 	EXPECT_TRUE(q.empty());
 }
 
-TEST(TStack, empty_correct_if_queue_is_not_empty) {
+TEST(TQueue, empty_correct_if_queue_is_not_empty) {
 	TQueue<int> q;
 
 	q.push(1);
@@ -54,7 +54,17 @@ TEST(TStack, empty_correct_if_queue_is_not_empty) {
 	EXPECT_FALSE(q.empty());
 }
 
-TEST(TStack, count_is_correct) {
+TEST(TQueue, empty_correct_after_removing_elements) {
+	TQueue<int> q;
+
+	q.push(1); q.push(1); q.push(1);
+	q.pop(); q.pop(); q.pop();
+
+	EXPECT_TRUE(q.empty());
+}
+
+
+TEST(TQueue, count_is_correct) {
 	TQueue<int> q;
 
 	q.push(1); q.push(2);
@@ -62,13 +72,13 @@ TEST(TStack, count_is_correct) {
 	EXPECT_EQ(2, q.count());
 }
 
-TEST(TStack, throw_after_pop_if_queue_is_empty) {
+TEST(TQueue, throw_after_pop_if_queue_is_empty) {
 	TQueue<int> q;
 
 	ASSERT_ANY_THROW(q.pop());
 }
 
-TEST(TStack, can_copy_queue) {
+TEST(TQueue, can_copy_queue) {
 	bool equality = true;
 	TQueue<int> q1;
 	for (int i = 0; i < 20; i++)
@@ -83,7 +93,7 @@ TEST(TStack, can_copy_queue) {
 	EXPECT_TRUE(equality);
 }
 
-TEST(TStack, can_assign_queue) {
+TEST(TQueue, can_assign_queue) {
 	bool equality = true;
 	TQueue<int> q1, q2;
 	for (int i = 0; i < 20; i++)
